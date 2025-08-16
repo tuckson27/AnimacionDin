@@ -1,0 +1,86 @@
+body {
+    background-color: #510200; /* fondo */
+    text-align: center;
+}
+h1 {
+    text-align: center;
+    font-family: "Racing Sans One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 100px;
+    margin-top: auto;
+    background: linear-gradient(90deg, #fab243, #e44230);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    /* Bordes detrás del degradado */
+    text-shadow:
+        3px 3px 0 #fff,
+        6px 6px 0 #000;
+}
+h3 {
+    color: lightgoldenrodyellow; /* Gabriel Pérez */
+    text-align: center;
+    margin-left: 40px; /* margen izquierdo */
+    font-family: "Bebas Neue", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: regular;
+    font-size: 150px;
+    margin-bottom: 3px;
+    margin-top: 1px;
+}
+
+p {
+    font-family: "Montserrat", sans-serif; /* Actividades de la materia Animación Dinámica */
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 40px; /* margen izquierdo */
+    margin-top: 0;
+}
+
+h4 {
+    color: lightgoldenrodyellow; /* Actividades */
+    text-align: left;
+    margin-left: 40px; /* margen izquierdo */
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+ul {
+    color: lightgoldenrodyellow; /* lista */
+    text-align: left;
+    margin-left: 40px; /* margen izquierdo */
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.tira-infinita {
+    width: 100%;
+    overflow: hidden;
+    background: #e44230;
+    border-top: 4px solid #fab243;
+    border-bottom: 4px solid #fab243;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.tira-contenido {
+    display: inline-block;
+    white-space: nowrap;
+    font-family: "Racing Sans One", sans-serif;
+    font-size: 40px;
+    color: #fff;
+    animation: tira-move 10s linear infinite;
+}
+
+@keyframes tira-move {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
