@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pato Rebotando</title>
+  <style>
+      canvas {
+          border: 3px solid brown;
+          background-color: rgb(143, 234, 120);
+      }
+  </style>
+</head>
+<body>
+   <canvas id="micanvas" width="800" height="600"></canvas>
+
+<script>
+    let canvas = document.getElementById("micanvas");
+    let ctx = canvas.getContext("2d");
+
+    let size = 20; // cada cuadrado
+    let x = 100;   // posición inicial X
+    let y = 100;   // posición inicial Y
+    let dx = 3;    // velocidad en X
+    let dy = 2;    // velocidad en Y
+
+    function drawDuck(offsetX, offsetY){
+        // --- CONTORNO NEGRO ---
+        ctx.fillStyle = "black";
+        ctx.fillRect(offsetX+120, offsetY+70, size, size);
+        ctx.fillRect(offsetX+140, offsetY+50, size, size);
+        ctx.fillRect(offsetX+160, offsetY+50, size, size);
+        ctx.fillRect(offsetX+180, offsetY+50, size, size);
+        ctx.fillRect(offsetX+200, offsetY+70, size, size);
+        ctx.fillRect(offsetX+220, offsetY+90, size, size);
+        ctx.fillRect(offsetX+240, offsetY+110, size, size);
+        ctx.fillRect(offsetX+240, offsetY+130, size, size);
+        ctx.fillRect(offsetX+240, offsetY+150, size, size);
+        ctx.fillRect(offsetX+220, offsetY+170, size, size);
+        ctx.fillRect(offsetX+200, offsetY+190, size, size);
+        ctx.fillRect(offsetX+180, offsetY+190, size, size);
+        ctx.fillRect(offsetX+160, offsetY+190, size, size);
+        ctx.fillRect(offsetX+140, offsetY+190, size, size);
+        ctx.fillRect(offsetX+120, offsetY+190, size, size);
+        ctx.fillRect(offsetX+100, offsetY+170, size, size);
+        ctx.fillRect(offsetX+100, offsetY+150, size, size);
+        ctx.fillRect(offsetX+100, offsetY+130, size, size);
+        ctx.fillRect(offsetX+100, offsetY+110, size, size);
+
+        // --- PICO ---
+        ctx.fillStyle = "orange";
+        ctx.fillRect(offsetX+80, offsetY+110, size, size);
+        ctx.fillRect(offsetX+80, offsetY+130, size, size);
+        ctx.fillRect(offsetX+100, offsetY+130, size, size);
+
+        // --- CUERPO ---
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(offsetX+120, offsetY+90, size, size);
+        ctx.fillRect(offsetX+140, offsetY+70, size, size);
+        ctx.fillRect(offsetX+160, offsetY+70, size, size);
+        ctx.fillRect(offsetX+180, offsetY+70, size, size);
+        ctx.fillRect(offsetX+200, offsetY+90, size, size);
+        ctx.fillRect(offsetX+220, offsetY+110, size, size);
+        ctx.fillRect(offsetX+220, offsetY+130, size, size);
+        ctx.fillRect(offsetX+220, offsetY+150, size, size);
+        ctx.fillRect(offsetX+200, offsetY+170, size, size);
+        ctx.fillRect(offsetX+180, offsetY+170, size, size);
+        ctx.fillRect(offsetX+160, offsetY+170, size, size);
+        ctx.fillRect(offsetX+140, offsetY+170, size, size);
+        ctx.fillRect(offsetX+120, offsetY+170, size, size);
+        ctx.fillRect(offsetX+120, offsetY+150, size, size);
+        ctx.fillRect(offsetX+120, offsetY+130, size, size);
+        ctx.fillRect(offsetX+120, offsetY+110, size, size);
+        ctx.fillRect(offsetX+140, offsetY+90, size, size);
+        ctx.fillRect(offsetX+160, offsetY+90, size, size);
+        ctx.fillRect(offsetX+180, offsetY+90, size, size);
+        ctx.fillRect(offsetX+200, offsetY+110, size, size);
+        ctx.fillRect(offsetX+200, offsetY+130, size, size);
+        ctx.fillRect(offsetX+200, offsetY+150, size, size);
+        ctx.fillRect(offsetX+180, offsetY+150, size, size);
+        ctx.fillRect(offsetX+160, offsetY+150, size, size);
+        ctx.fillRect(offsetX+140, offsetY+150, size, size);
+        ctx.fillRect(offsetX+140, offsetY+130, size, size);
+        ctx.fillRect(offsetX+160, offsetY+130, size, size);
+        ctx.fillRect(offsetX+180, offsetY+130, size, size);
+        ctx.fillRect(offsetX+180, offsetY+110, size, size);
+        ctx.fillRect(offsetX+160, offsetY+110, size, size);
+        ctx.fillRect(offsetX+140, offsetY+110, size, size);
+
+        // --- OJO ---
+        ctx.fillStyle = "black";
+        ctx.fillRect(offsetX+160, offsetY+90, size, size);
+
+        // --- PATAS ---
+        ctx.fillStyle = "orange";
+        ctx.fillRect(offsetX+120, offsetY+210, size, size);
+        ctx.fillRect(offsetX+140, offsetY+210, size, size);
+        ctx.fillRect(offsetX+180, offsetY+210, size, size);
+        ctx.fillRect(offsetX+200, offsetY+210, size, size);
+    }
+
+    function update(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // dibujar pato en su posición actual
+        drawDuck(x, y);
+
+        // mover pato
+        x += dx;
+        y += dy;
+
+        // obtener tamaño aproximado del pato (ancho y alto en pixeles)
+        let patoWidth = 180; 
+        let patoHeight = 180;
+
+        // rebotar en bordes
+        if(x < -80 || x + patoWidth > canvas.width){
+            dx = -dx;
+        }
+        if(y < -80 || y + patoHeight > canvas.height){
+            dy = -dy;
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    update();
+</script>
+
+  </head>
+<body>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pagina 4</title>
+  <style>
+      canvas{
+          border: 3px solid brown;
+          background-color: white;
+      }
+  </style>
+
+<script>
+    //window.onload=function(){}
+    var x = 0;
+    var y = 0;
+    var dx = 5;
+    var dy = 3;
+    
+    function animate(){
+        requestAnimationFrame(animate);
+        console.log('animando');
+          var canvas = document.getElementById("micanvas");
+          var context = canvas.getContext("2d");
+
+          context.clearRect(0, 0, innerWidth, innerHeight);
+          context.fillStyle = "red";
+          context.fillRect(80,80,150,300); // Dibuja un rectángulo dentro, primero coordenadas y luego dimensiones
+
+          context.fillStyle = "rgba(0,255,0,0.8)";
+          context.fillRect(200,y,100,100)
+
+          context.fillStyle = "rgba(0,255,255,0.8)"; 
+          context.fillRect(x,200,200,200)
+
+          context.font = "30px Arial";
+          context.fillStyle = "black";
+          context.fillText("Hola mundo", x + 10, y + 50);
+
+          if ( x > 800-200 || x < 0) /* cambia X el 5 por -5 para rebotar */
+          {
+              dx = -dx;
+          }
+
+          if ( y > 600-100 || y < 0) /* cambia Y el 3 por -3 para rebotar */
+          {
+              dy = -dy;
+          }
+
+          x+=dx;
+          y+=dy;
+    }
+    animate();
+</script>
+
+  </head>
+<body>
+   <canvas id="micanvas" width="800" height="600"></canvas>
+</body>
+</html>
