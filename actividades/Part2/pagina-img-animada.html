@@ -6,7 +6,7 @@
    <style>
     body{
         text-align: center;
-        background-image: url('fondo.jpeg'); /* Cambia por tu imagen */
+        background-image: url('fondo.jpg'); /* Cambia por tu imagen */
         background-size: cover;
         background-position: center;
     }
@@ -27,9 +27,9 @@
         function animate(){    
             var canvas = document.getElementById("micanvas");
             var context = canvas.getContext("2d");
-            context.clearRect(0, 0, canvas.width, canvas.height); // Corregido aquí
+            context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(imagen, x, y, 150, 130); 
-            if (x > canvas.width - 140 || x < 0){ // Corregido aquí
+            if (x > canvas.width - 140 || x < 0){
                 dx = -dx;
             }
             if (y > canvas.height - 120 || y < 0){

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script>
+    window.onload = function () {
+      //Our code here...
+      function MiObjeto (persona) { 
+        this.name = persona; 
+        this.say = function () { console.log("Hola " + this.name); }; 
+        } 
+        var objA = new MiObjeto("Ana"); 
+        objA.say(); 
+
+      var objB = {
+	    name: "Mi objeto B",
+	    hello: function (person) {
+		    console.log("Hello, " + person);
+	        }
+        };
+        objB.hello("amigos");
+
+        //agregar al código del constructor anterior
+        MiObjeto.prototype.hello = function () { console.log("Konnichiwa, " + this.name); }; 
+        objA.hello(); //prints: "Konnichiwa, ana" 
+        var objB = new MiObjeto("pikachu"); 
+        objB.hello(); //prints: "Konnichiwa, pikachu"
+
+        var arr = [1, 2, 3]; 
+        for (var i = 0, len = arr.length; i < len; i++) { 
+            console.log(arr[i]); 
+        } 
+
+        arr.forEach(function (element, i) { 
+        console.log(element); 
+        });
+
+
+    };
+    </script>
+  </body>
+</html>

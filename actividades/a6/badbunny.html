@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Canvas interactivo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Racing+Sans+One&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+          background-color: lightblue;
+        text-align: center;
+        background-image: url('wallpaper.jpg'); /* Usa wallpaper.png si es PNG */
+        background-size: cover;
+        background-position: center;
+      }
+      canvas {
+          border: 1px solid white;
+          background-color: rgb(194, 190, 246);
+      }
+
+      aside {
+    color: white;
+    font-size: 1.3em;
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin-bottom: 20px;
+    }
+    </style>
+    </head>
+    <body>
+    <aside>Presiona las letras Y, O, U, N, D, E, L, X</aside>
+    <canvas id="canvas" width="800" height="600"></canvas>
+<script>
+window.onload = function () {
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    // Mapeo de letras a imágenes
+    var albumImages = {
+      89: "y.jfif", // Yo hago lo que me da la gana
+      79: "o.jfif", // Oasis
+      85: "u.jfif", // Un verano sin ti
+      78: "n.jfif", // Nadie sabe
+      68: "d.jfif", // Debi tirar mas fotos
+      69: "e.jfif", // El ultimo tour del mundo
+      76: "l.jfif",  // Las que no iban a salir
+      88: "x.jfif"  // X 100PRE
+    };
+
+    // Mapeo de letras a colores
+    var albumColors = {
+      89: "#055f82", // Y - amarillo
+      79: "#9b9c9d", // O - naranja
+      85: "#ee5b7e", // U - turquesa
+      78: "#c58671", // N - verde
+      68: "#27b93f", // D - azul
+      69: "#e8351a", // E - rosa
+      76: "#f0e043",  // L - morado
+      88: "#b5b7b6"  // X - púrpura
+    };
+
+    var currentImage = null;
+    var currentLetter = "";
+    var canvasColor = "rgb(194, 190, 246)";
+
+function draw() {
+  // Fondo del canvas
+  context.fillStyle = canvasColor;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Centrar el texto "Bad Bunny" y agregar sombra
+  context.font = "50pt Bebas Neue";
+  context.textAlign = "center";
+  context.textBaseline = "top";
+  context.shadowColor = "rgba(0,0,0,0.5)";
+  context.shadowBlur = 8;
+  context.shadowOffsetX = 4;
+  context.shadowOffsetY = 4;
+  context.fillStyle = "white";
+  context.fillText("Albums de Bad Bunny", canvas.width / 2, 100);
+
+  // Quitar sombra para el resto del texto
+  context.shadowColor = "transparent";
+  context.shadowBlur = 0;
+  context.shadowOffsetX = 0;
+  context.shadowOffsetY = 0;
+
+  if (currentImage) {
+    context.drawImage(currentImage, 300, 200, 200, 200);
+    context.font = "36pt sans-serif";
+    context.textAlign = "left";
+    context.textBaseline = "alphabetic";
+    context.fillStyle = "darkred";
+    context.fillText("Letra: " + currentLetter, 320, 450);
+  }
+}
+
+    function loadAlbumImage(keyCode) {
+      if (albumImages[keyCode]) {
+        var img = new Image();
+        img.src = albumImages[keyCode];
+        img.onload = function() {
+          currentImage = img;
+          currentLetter = String.fromCharCode(keyCode);
+          canvasColor = albumColors[keyCode] || "rgb(194, 190, 246)";
+          draw();
+        };
+      } else {
+        currentImage = null;
+        currentLetter = "";
+        canvasColor = "rgb(194, 190, 246)";
+        draw();
+      }
+    }
+
+    function onKeyboardEvent (event) {
+      loadAlbumImage(event.keyCode);
+    }
+
+    draw();
+    window.addEventListener('keydown', onKeyboardEvent, false);
+};
+</script>
+  </body>
+</html>
