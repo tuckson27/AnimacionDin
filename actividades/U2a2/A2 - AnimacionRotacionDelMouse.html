@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Stickman con atan2</title>
+  <style>
+    body {
+      margin: 0;
+      background: #333; /* color fuera del canvas */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    canvas {
+      display: block;
+      border: 4px solid black; /* delimitación  */
+    }
+  </style>
+</head>
+<body>
+<canvas id="canvas" width="1280" height="720"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+// Imagen de fondo
+const bgImg = new Image();
+bgImg.src = "campo.jpg"; // fondo
+
+// Escala del stickman
+const SCALE = 1.5;
+
+// Datos del stickman
+const stickman = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  speed: 2,
+  greeting: false
+};
+
+const mouse = { x: stickman.x, y: stickman.y };
+
+// Captura del mouse
+canvas.addEventListener("mousemove", e => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+});
+
+// Función para dibujar al stickman
+function drawStickman(ctx, legStep, armStep, greeting) {
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 3 * SCALE;
+
+  // Cabeza
+  ctx.beginPath();
+  ctx.arc(0, -30 * SCALE, 12 * SCALE, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Cuerpo
+  ctx.beginPath();
+  ctx.moveTo(0, -18 * SCALE);
+  ctx.lineTo(0, 20 * SCALE);
+  ctx.stroke();
+
+  if (greeting) {
+    // Brazo saludando (izquierdo)
+    ctx.beginPath();
+    ctx.moveTo(0, -10 * SCALE);
+    ctx.lineTo(-20 * SCALE, -10 * SCALE + Math.sin(Date.now() / 150) * 15);
+    ctx.stroke();
+
+    // Otro brazo quieto (derecho)
+    ctx.beginPath();
+    ctx.moveTo(0, -10 * SCALE);
+    ctx.lineTo(20 * SCALE, 0);
+    ctx.stroke();
+
+    // Piernas quietas
+    ctx.beginPath();
+    ctx.moveTo(0, 20 * SCALE);
+    ctx.lineTo(-12 * SCALE, 40 * SCALE);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0, 20 * SCALE);
+    ctx.lineTo(12 * SCALE, 40 * SCALE);
+    ctx.stroke();
+  } else {
+    // Brazos caminando
+    ctx.beginPath();
+    ctx.moveTo(0, -10 * SCALE);
+    ctx.lineTo(-20 * SCALE, 0 + armStep);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0, -10 * SCALE);
+    ctx.lineTo(20 * SCALE, 0 - armStep);
+    ctx.stroke();
+
+    // Piernas caminando
+    ctx.beginPath();
+    ctx.moveTo(0, 20 * SCALE);
+    ctx.lineTo(-12 * SCALE, 40 * SCALE + legStep);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0, 20 * SCALE);
+    ctx.lineTo(12 * SCALE, 40 * SCALE - legStep);
+    ctx.stroke();
+  }
+}
+
+// Animación
+function drawFrame() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Fondo
+  if (bgImg.complete) {
+    ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+  } else {
+    ctx.fillStyle = "#87CEFA"; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Calcular dirección y mover con atan2
+  const dx = mouse.x - stickman.x;
+  const dy = mouse.y - stickman.y;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+
+  if (dist > 20) {
+    stickman.greeting = false; 
+    const angle = Math.atan2(dy, dx); // uso atan2
+    stickman.x += Math.cos(angle) * stickman.speed;
+    stickman.y += Math.sin(angle) * stickman.speed;
+  } else {
+    stickman.greeting = true; 
+  }
+
+  // Movimiento de piernas y brazos
+  const legStep = Math.sin(Date.now() / 150) * 6 * SCALE;
+  const armStep = Math.sin(Date.now() / 150 + Math.PI / 2) * 6 * SCALE;
+
+  // Dibujar stickman
+  ctx.save();
+  ctx.translate(stickman.x, stickman.y);
+  drawStickman(ctx, legStep, armStep, stickman.greeting);
+  ctx.restore();
+
+  requestAnimationFrame(drawFrame);
+}
+
+drawFrame();
+</script>
+</body>
+</html>
