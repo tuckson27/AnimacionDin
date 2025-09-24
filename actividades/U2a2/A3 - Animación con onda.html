@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pájaro Onda</title>
+    <style>
+      body {
+        background: rgb(222, 255, 223);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      h1 {
+        font-family: Monospace, sans-serif;
+        font-size: 50px;
+        color: #222;
+        margin-bottom: 10px;
+      }
+      canvas {
+        background: rgb(40, 69, 44);
+        border: 2px solid black;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>FUTBOL</h1>
+    <canvas id="canvas" width="500" height="400"></canvas>
+
+    <script>
+      window.onload = function () {
+        var canvas = document.getElementById("canvas"),
+            context = canvas.getContext("2d"),
+            angle = 0,
+            speed = 0.05;
+
+        // Imagen del pájaro
+        var pajaro = new Image();
+        pajaro.src = "pajaro.png";
+
+        // Propiedades del pájaro
+        var bird = {
+          x: 0,
+          y: 0,
+          scale: 0.1, // mucho más pequeño
+          draw: function (ctx) {
+            let w = pajaro.width * this.scale;
+            let h = pajaro.height * this.scale;
+            ctx.drawImage(pajaro, this.x - w / 2, this.y - h / 2, w, h);
+          }
+        };
+
+        pajaro.onload = function () {
+          (function drawFrame() {
+            requestAnimationFrame(drawFrame);
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Movimiento que ocupa todo el canvas
+            bird.x = canvas.width / 2 + Math.sin(angle) * (canvas.width / 2 - 20);
+            bird.y = canvas.height / 2 + Math.cos(angle) * (canvas.height / 2 - 20);
+
+            // Escala oscilante pequeña
+            bird.scale = 0.1 + Math.sin(angle) * 0.02;
+
+            bird.draw(context);
+
+            angle += speed;
+          })();
+        };
+      };
+    </script>
+  </body>
+</html>
