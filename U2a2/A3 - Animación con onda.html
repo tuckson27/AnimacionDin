@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pájaro Onda</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styleindex.css">
+
+    <style>
+      body {
+        background: rgb(222, 255, 223);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .bg-estadio {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: url('estadioo.jpg') center center / cover no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 50px;
+        color: #222;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px #fff; /* Borde blanco */
+      }
+      canvas {
+        background: rgb(40, 69, 44);
+        border: 2px solid black;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="bg-estadio">
+      <h1>FUTBOL</h1>
+      <canvas id="canvas" width="700" height="500"></canvas>
+    </section>
+    <script>
+  window.onload = function () {
+    var canvas = document.getElementById("canvas"),
+        context = canvas.getContext("2d"),
+        angle = 0,
+        speed = 0.05;
+
+    // Imagen del pájaro
+    var pajaro = new Image();
+    pajaro.src = "pajaro.png";
+
+    // Imagen de fondo del canvas
+    var fondoArco = new Image();
+    fondoArco.src = "arcoo.jpg";
+
+    // Propiedades del pájaro
+    var bird = {
+      x: 0,
+      y: 0,
+      scale: 0.1,
+      draw: function (ctx) {
+        let w = pajaro.width * this.scale;
+        let h = pajaro.height * this.scale;
+        ctx.drawImage(pajaro, this.x - w / 2, this.y - h / 2, w, h);
+      }
+    };
+
+    // Espera a que ambas imágenes estén cargadas
+    Promise.all([
+      new Promise(res => pajaro.onload = res),
+      new Promise(res => fondoArco.onload = res)
+    ]).then(function () {
+      (function drawFrame() {
+        requestAnimationFrame(drawFrame);
+
+        // Dibuja la imagen de fondo en el canvas
+        context.drawImage(fondoArco, 0, 0, canvas.width, canvas.height);
+
+        // Movimiento que ocupa todo el canvas
+        bird.x = canvas.width / 2 + Math.sin(angle) * (canvas.width / 2 - 20);
+        bird.y = canvas.height / 2 + Math.cos(angle) * (canvas.height / 2 - 20);
+
+        // Escala oscilante pequeña
+        bird.scale = 0.1 + Math.sin(angle) * 0.02;
+
+        bird.draw(context);
+
+        angle += speed;
+      })();
+    });
+  };
+</script>
+  </body>
+</html>
