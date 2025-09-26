@@ -45,71 +45,66 @@
       <canvas id="canvas" width="700" height="500"></canvas>
     </section>
 
-    <script>
-      window.onload = function () {
-        var canvas = document.getElementById("canvas"),
-            context = canvas.getContext("2d");
+<script>
+window.onload = function () {
+  var canvas = document.getElementById("canvas"),
+      context = canvas.getContext("2d");
 
-        var pajaro = new Image();
-        pajaro.src = "pajaro.png";
+  var pajaro = new Image();
+  pajaro.src = "pajaro.png";
 
-        var fondoArco = new Image();
-        fondoArco.src = "arcoo.jpg";
+  var fondoArco = new Image();
+  fondoArco.src = "arcoo.jpg";
 
-        // Propiedades físicas del pájaro
-        var bird = {
-          x: 100,
-          y: 100,
-          vx: 3,
-          vy: -5,
-          gravity: 0.2,
-          scale: 0.1,
-          draw: function (ctx) {
-            let w = pajaro.width * this.scale;
-            let h = pajaro.height * this.scale;
-            ctx.drawImage(pajaro, this.x - w / 2, this.y - h / 2, w, h);
-          }
-        };
+  var bird = {
+    x: 80,
+    y: 80,
+    vx: 4,       // velocidad horizontal
+    vy: -6,      // velocidad vertical inicial
+    gravity: 0.3,
+    scale: 0.1,
+    draw: function (ctx) {
+      let w = pajaro.width * this.scale;
+      let h = pajaro.height * this.scale;
+      ctx.drawImage(pajaro, this.x - w / 2, this.y - h / 2, w, h);
+    }
+  };
 
-        Promise.all([
-          new Promise(res => pajaro.onload = res),
-          new Promise(res => fondoArco.onload = res)
-        ]).then(function () {
-          (function drawFrame() {
-            requestAnimationFrame(drawFrame);
+  Promise.all([
+    new Promise(res => pajaro.onload = res),
+    new Promise(res => fondoArco.onload = res)
+  ]).then(function () {
+    (function drawFrame() {
+      requestAnimationFrame(drawFrame);
 
-            context.drawImage(fondoArco, 0, 0, canvas.width, canvas.height);
+      context.drawImage(fondoArco, 0, 0, canvas.width, canvas.height);
 
-            // Física
-            bird.vy += bird.gravity;
-            bird.x += bird.vx;
-            bird.y += bird.vy;
+      // Física parabólica
+      bird.vy += bird.gravity;
+      bird.x += bird.vx;
+      bird.y += bird.vy;
 
-            // Rebote horizontal
-            if (bird.x < 20 || bird.x > canvas.width - 20) {
-              bird.vx *= -1;
-            }
+      // Rebote lateral
+      if (bird.x < 20 || bird.x > canvas.width - 20) {
+        bird.vx *= -1;
+      }
 
-            // Rebote vertical
-            if (bird.y > canvas.height - 20) {
-              bird.y = canvas.height - 20;
-              bird.vy *= -0.8;
+      // Rebote inferior (perfecto)
+      if (bird.y > canvas.height - 20) {
+        bird.y = canvas.height - 20;
+        bird.vy *= -1; // rebote perfecto, conserva la energía
+      }
 
-              // Si la velocidad es muy baja, le damos un pequeño impulso
-              if (Math.abs(bird.vy) < 1) {
-                bird.vy = -4;
-              }
-            }
+      // Rebote superior (perfecto)
+      if (bird.y < 20) {
+        bird.y = 20;
+        bird.vy *= -1; // rebote perfecto
+      }
 
-            if (bird.y < 20) {
-              bird.y = 20;
-              bird.vy *= -1;
-            }
-
-            bird.draw(context);
-          })();
-        });
-      };
-    </script>
+      bird.draw(context);
+    })();
+  });
+};
+</script>
   </body>
 </html>
