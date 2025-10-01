@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Pájaro Onda</title>
+    <style>
+      body {
+        background: rgb(222, 255, 223);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .bg-estadio {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: url('estadioo.jpg') center center / cover no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 50px;
+        color: #222;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px #fff;
+      }
+      canvas {
+        background: rgb(40, 69, 44);
+        border: 2px solid black;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="bg-estadio">
+      <h1>FUTBOL</h1>
+      <canvas id="canvas" width="900" height="600"></canvas>
+    </section>
+
+  <script>
+  window.onload = function () {
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const pajaro = new Image();
+    pajaro.src = "pajaro.png";
+
+    const fondoArco = new Image();
+    fondoArco.src = "arcoo.jpg";
+
+    // Parámetros de la onda
+    let angle = 0;
+    let speed = 3;           // velocidad horizontal (puedes ajustar)
+    const amplitude = 80;    // altura de la onda
+    const frequency = 0.05;  // frecuencia de la onda
+
+    let bird = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      scale: 0.07, // más chica la pelota
+      draw: function () {
+        let w = pajaro.width * this.scale;
+        let h = pajaro.height * this.scale;
+        ctx.drawImage(pajaro, this.x - w / 2, this.y - h / 2, w, h);
+      }
+    };
+
+    Promise.all([
+      new Promise(res => pajaro.onload = res),
+      new Promise(res => fondoArco.onload = res)
+    ]).then(function () {
+      function drawFrame() {
+        requestAnimationFrame(drawFrame);
+
+        ctx.drawImage(fondoArco, 0, 0, canvas.width, canvas.height);
+
+        // Movimiento en onda
+        bird.x += speed;
+        angle += frequency;
+        bird.y = canvas.height / 2 + Math.sin(angle) * amplitude;
+
+        // Rebote en los laterales
+        let w = pajaro.width * bird.scale;
+        if (bird.x > canvas.width - w / 2) {
+          bird.x = canvas.width - w / 2;
+          speed *= -1;
+        }
+        if (bird.x < w / 2) {
+          bird.x = w / 2;
+          speed *= -1;
+        }
+
+        bird.draw();
+      }
+      drawFrame();
+    });
+  };
+  </script>
+  </body>
+</html>

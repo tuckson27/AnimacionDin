@@ -1,0 +1,411 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <canvas id="canvas" width="1000" height="600"></canvas>
+    <script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        context = canvas.getContext('2d');
+
+        // Fondo azul oscuro (noche)
+        context.save();
+        context.fillStyle = '#0a1647'; // azul muy oscuro
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.restore();
+
+        // Triángulo (techo)
+        context.save();
+        context.lineWidth = 3;
+        context.strokeStyle = 'black';
+        context.fillStyle = "rgb(241, 90, 40)";
+        context.beginPath();
+        context.moveTo(320,350);   
+        context.lineTo(500,200);   
+        context.lineTo(680,350);  
+        context.lineTo(320,350);   
+        context.fill();
+        context.stroke();
+        context.restore();
+
+        // Rectángulo (casa)
+        context.save();
+        context.lineWidth = 3;
+        context.strokeStyle = 'black';
+        context.fillStyle = 'rgba(253, 222, 175)';
+        context.beginPath();
+        context.lineJoin = "round";
+        context.fillRect(350,350,300,200);   
+        context.strokeRect(350,350,300,200);
+        context.stroke();
+        context.restore();
+
+        // Puerta roja
+        context.save();
+        context.lineWidth = 3;
+        context.strokeStyle = 'black';
+        context.fillStyle = 'red';
+        context.fillRect(470,450,60,100);     
+        context.strokeRect(470,450,60,100);
+        context.restore();
+
+        // Manilla de la puerta (pequeña línea, ajustada)
+        context.save();
+        context.strokeStyle = 'gold';
+        context.lineWidth = 5;
+        context.beginPath();
+        context.moveTo(515,500);   // x1, y1
+        context.lineTo(525,500);   // x2, y2
+        context.stroke();
+        context.restore();
+
+        // Ventana circular azul dentro del triángulo
+        context.save();
+        context.beginPath();
+        context.arc(500, 270, 35, 0, 2 * Math.PI);
+        context.fillStyle = 'rgba(165, 223, 247)';
+        context.fill();
+        context.lineWidth = 3;
+        context.strokeStyle = 'black';
+        context.stroke();
+        context.restore();
+
+        // Tallo del hongo
+        context.save();
+        context.beginPath();
+        context.lineWidth = 3;
+        context.strokeStyle = '#b48a78';
+        context.fillStyle = '#f7e7ce';
+        context.ellipse(720, 520, 18, 40, 0, 0, 2 * Math.PI); // x, y, rx, ry
+        context.fill();
+        context.stroke();
+        context.restore();
+
+        // Sombrero del hongo
+        context.save();
+        context.beginPath();
+        context.lineWidth = 3;
+        context.strokeStyle = '#a80000';
+        context.fillStyle = 'red';
+        context.ellipse(720, 490, 50, 30, 0, Math.PI, 2 * Math.PI);
+        context.lineTo(770, 490); // extremo derecho de la elipse
+        context.lineTo(670, 490); // extremo izquierdo de la elipse
+        context.closePath();
+        context.fill();
+        context.stroke();
+        context.restore();
+
+        // Puntos blancos del sombrero
+        context.save();
+        context.fillStyle = 'white';
+        context.beginPath();
+        context.arc(700, 485, 7, 0, 2 * Math.PI); 
+        context.fill();
+        context.beginPath();
+        context.arc(720, 475, 6, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(740, 485, 5, 0, 2 * Math.PI); 
+        context.fill();
+        context.restore();
+
+        // Estrella amarilla arriba a la izquierda de la casa
+        context.save();
+        context.beginPath();
+        context.moveTo(220, 70);   
+        context.lineTo(250, 140);  
+        context.lineTo(180, 100);  
+        context.lineTo(260, 100);  
+        context.lineTo(190, 140);  
+        context.lineTo(220, 70);   
+        context.closePath();
+        context.fillStyle = 'yellow';
+        context.lineWidth = 4;
+        context.fill();
+        context.restore();
+
+        // Segunda estrella amarilla
+        context.save();
+        context.beginPath();
+        context.moveTo(380, 130);  
+        context.lineTo(400, 170); 
+        context.lineTo(355, 150);   
+        context.lineTo(405, 150);  
+        context.lineTo(360, 170);  
+        context.lineTo(380, 130);   
+        context.closePath();
+        context.fillStyle = 'yellow';
+        context.lineWidth = 4;
+        context.fill();
+        context.restore();
+
+        // Tercera estrella amarilla
+        context.save();
+        context.beginPath();
+        context.moveTo(700, 120);  
+        context.lineTo(730, 190);
+        context.lineTo(660, 150);
+        context.lineTo(740, 150);
+        context.lineTo(670, 190);
+        context.lineTo(700, 120);
+        context.closePath();
+        context.fillStyle = 'yellow';
+        context.lineWidth = 4;
+        context.fill();
+        context.restore();
+
+        // Cuarta estrella amarilla
+        context.save();
+        context.beginPath();
+        context.moveTo(60, 30);   
+        context.lineTo(75, 60);
+        context.lineTo(35, 45);
+        context.lineTo(85, 45);
+        context.lineTo(45, 60);
+        context.lineTo(60, 30);
+        context.closePath();
+        context.fillStyle = 'yellow';
+        context.lineWidth = 4;
+        context.fill();
+        context.restore();
+
+        // Quinta estrella amarilla
+        context.save();
+        context.beginPath();
+        context.moveTo(800, 260);   
+        context.lineTo(820, 300);   
+        context.lineTo(775, 280);   
+        context.lineTo(825, 280);   
+        context.lineTo(780, 300);   
+        context.lineTo(800, 260);   
+        context.closePath();
+        context.fillStyle = 'yellow';
+        context.lineWidth = 4;
+        context.fill();
+        context.restore();
+
+        // Estrella amarilla cerca de la esquina superior derecha
+        context.save();
+        context.beginPath();
+        context.moveTo(950, 70);   
+        context.lineTo(980, 140);
+        context.lineTo(910, 100);
+        context.lineTo(990, 100);
+        context.lineTo(920, 140);
+        context.lineTo(950, 70);
+        context.closePath();
+        context.fillStyle = 'yellow';
+        context.lineWidth = 4;
+        context.fill();
+        context.restore();
+
+        // Sexta estrella amarilla abajo a la izquierda
+        context.save();
+        context.beginPath();
+        context.moveTo(60, 200);    
+        context.lineTo(75, 230);    
+        context.lineTo(35, 215);    
+        context.lineTo(85, 215);   
+        context.lineTo(45, 230);    
+        context.lineTo(60, 200);   
+        context.closePath();
+        context.fillStyle = 'yellow';
+        context.lineWidth = 4;
+        context.fill();
+        context.restore();
+
+        // Tallo del hongo morado
+        context.save();
+        context.beginPath();
+        context.lineWidth = 3;
+        context.strokeStyle = '#b48a78';
+        context.fillStyle = '#f7e7ce'; 
+        context.ellipse(280, 520, 18, 40, 0, 0, 2 * Math.PI);
+        context.fill();
+        context.stroke();
+        context.restore();
+
+        // Sombrero del hongo morado
+        context.save();
+        context.beginPath();
+        context.lineWidth = 3;
+        context.strokeStyle = '#4b006e'; // contorno más oscuro
+        context.fillStyle = 'purple';
+        context.ellipse(280, 490, 50, 30, 0, Math.PI, 2 * Math.PI);
+        context.lineTo(330, 490);
+        context.lineTo(230, 490); 
+        context.closePath();
+        context.fill();
+        context.stroke();
+        context.restore();
+
+        // Puntos blancos del sombrero morado
+        context.save();
+        context.fillStyle = 'white';
+        context.beginPath();
+        context.arc(260, 485, 7, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(280, 475, 6, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(300, 485, 5, 0, 2 * Math.PI);
+        context.fill();
+        context.restore();
+
+        // Círculo principal de la luna
+        context.save();
+        context.beginPath();
+        context.arc(500, 80, 50, 0, 2 * Math.PI);
+        context.fillStyle = '#f7f3c8';
+        context.fill();
+        context.closePath();
+
+        // Círculo para crear el efecto creciente
+        context.beginPath();
+        context.arc(520, 70, 45, 0, 2 * Math.PI);
+        context.fillStyle = '#0a1647'; 
+        context.fill();
+        context.closePath();
+        context.restore();
+
+        // Grama del piso (rectángulo grande)
+        context.save();
+        context.beginPath();
+        context.fillStyle = '#2e8b57';
+        context.fillRect(0, 540, canvas.width, 60); 
+        context.closePath();
+        context.restore();
+        // Grama con curvas (línea ondulada)
+        context.save();
+        context.beginPath();
+        context.moveTo(0, 540);
+        for (let x = 0; x <= canvas.width; x += 20) {
+            context.quadraticCurveTo(x + 10, 520 + Math.random() * 20, x + 20, 540);
+        }
+        context.lineTo(canvas.width, 600);
+        context.lineTo(0, 600);
+        context.closePath();
+        context.fillStyle = '#3cb371'; 
+        context.fill();
+        context.restore();
+
+        // Flor 1
+        context.save();
+        // Pétalos
+        context.fillStyle = 'white';
+        context.beginPath();
+        context.arc(210, 570, 4, 0, 2 * Math.PI); 
+        context.fill();
+        context.beginPath();
+        context.arc(200, 578, 4, 0, 2 * Math.PI); 
+        context.fill();
+        context.beginPath();
+        context.arc(220, 578, 4, 0, 2 * Math.PI); 
+        context.fill();
+        context.beginPath();
+        context.arc(210, 586, 4, 0, 2 * Math.PI); 
+        context.fill();
+        // Centro
+        context.beginPath();
+        context.fillStyle = 'yellow';
+        context.arc(210, 578, 5, 0, 2 * Math.PI);
+        context.fill();
+        context.restore();
+
+        // Flor 2
+        context.save();
+        context.fillStyle = 'white';
+        context.beginPath();
+        context.arc(260, 590, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(250, 598, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(270, 598, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(260, 606, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.fillStyle = 'yellow';
+        context.arc(260, 598, 5, 0, 2 * Math.PI);
+        context.fill();
+        context.restore();
+
+        // Flor 3
+        context.save();
+        context.fillStyle = 'white';
+        context.beginPath();
+        context.arc(400, 560, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(390, 568, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(410, 568, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(400, 576, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.fillStyle = 'yellow';
+        context.arc(400, 568, 5, 0, 2 * Math.PI);
+        context.fill();
+        context.restore();
+
+        // Flor 4
+        context.save();
+        context.fillStyle = 'white';
+        context.beginPath();
+        context.arc(600, 580, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(590, 588, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(610, 588, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(600, 596, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.fillStyle = 'yellow';
+        context.arc(600, 588, 5, 0, 2 * Math.PI);
+        context.fill();
+        context.restore();
+
+        // Flor 5
+        context.save();
+        context.fillStyle = 'white';
+        context.beginPath();
+        context.arc(800, 570, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(790, 578, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(810, 578, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.arc(800, 586, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.beginPath();
+        context.fillStyle = 'yellow';
+        context.arc(800, 578, 5, 0, 2 * Math.PI);
+        context.fill();
+        context.restore();
+
+
+
+
+
+    };
+    </script>
+  </body>
+</html>

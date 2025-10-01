@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Pájaro Onda</title>
+
     <style>
       body {
         background: rgb(222, 255, 223);
@@ -12,11 +13,24 @@
         height: 100vh;
         margin: 0;
       }
+      .bg-estadio {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: url('estadioo.jpg') center center / cover no-repeat;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
       h1 {
-        font-family: Monospace, sans-serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 50px;
         color: #222;
         margin-bottom: 10px;
+        text-shadow: 2px 2px #fff;
       }
       canvas {
         background: rgb(40, 69, 44);
@@ -26,51 +40,71 @@
     </style>
   </head>
   <body>
-    <h1>FUTBOL</h1>
-    <canvas id="canvas" width="500" height="400"></canvas>
+    <section class="bg-estadio">
+      <h1>FUTBOL</h1>
+      <canvas id="canvas" width="700" height="500"></canvas>
+    </section>
 
-    <script>
-      window.onload = function () {
-        var canvas = document.getElementById("canvas"),
-            context = canvas.getContext("2d"),
-            angle = 0,
-            speed = 0.05;
+<script>
+window.onload = function () {
+  var canvas = document.getElementById("canvas"),
+      context = canvas.getContext("2d");
 
-        // Imagen del pájaro
-        var pajaro = new Image();
-        pajaro.src = "pajaro.png";
+  var pajaro = new Image();
+  pajaro.src = "pajaro.png";
 
-        // Propiedades del pájaro
-        var bird = {
-          x: 0,
-          y: 0,
-          scale: 0.1, // mucho más pequeño
-          draw: function (ctx) {
-            let w = pajaro.width * this.scale;
-            let h = pajaro.height * this.scale;
-            ctx.drawImage(pajaro, this.x - w / 2, this.y - h / 2, w, h);
-          }
-        };
+  var fondoArco = new Image();
+  fondoArco.src = "arcoo.jpg";
 
-        pajaro.onload = function () {
-          (function drawFrame() {
-            requestAnimationFrame(drawFrame);
+  var bird = {
+    x: 80,
+    y: 80,
+    vx: 4,       // velocidad horizontal
+    vy: -6,      // velocidad vertical inicial
+    gravity: 0.3,
+    scale: 0.1,
+    draw: function (ctx) {
+      let w = pajaro.width * this.scale;
+      let h = pajaro.height * this.scale;
+      ctx.drawImage(pajaro, this.x - w / 2, this.y - h / 2, w, h);
+    }
+  };
 
-            context.clearRect(0, 0, canvas.width, canvas.height);
+  Promise.all([
+    new Promise(res => pajaro.onload = res),
+    new Promise(res => fondoArco.onload = res)
+  ]).then(function () {
+    (function drawFrame() {
+      requestAnimationFrame(drawFrame);
 
-            // Movimiento que ocupa todo el canvas
-            bird.x = canvas.width / 2 + Math.sin(angle) * (canvas.width / 2 - 20);
-            bird.y = canvas.height / 2 + Math.cos(angle) * (canvas.height / 2 - 20);
+      context.drawImage(fondoArco, 0, 0, canvas.width, canvas.height);
 
-            // Escala oscilante pequeña
-            bird.scale = 0.1 + Math.sin(angle) * 0.02;
+      // Física parabólica
+      bird.vy += bird.gravity;
+      bird.x += bird.vx;
+      bird.y += bird.vy;
 
-            bird.draw(context);
+      // Rebote lateral
+      if (bird.x < 20 || bird.x > canvas.width - 20) {
+        bird.vx *= -1;
+      }
 
-            angle += speed;
-          })();
-        };
-      };
-    </script>
+      // Rebote inferior (perfecto)
+      if (bird.y > canvas.height - 20) {
+        bird.y = canvas.height - 20;
+        bird.vy *= -1; // rebote perfecto, conserva la energía
+      }
+
+      // Rebote superior (perfecto)
+      if (bird.y < 20) {
+        bird.y = 20;
+        bird.vy *= -1; // rebote perfecto
+      }
+
+      bird.draw(context);
+    })();
+  });
+};
+</script>
   </body>
 </html>
