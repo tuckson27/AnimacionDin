@@ -1,0 +1,278 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Drawing App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+      body {
+        text-align: center;
+        width: 100%;
+        background-color: darkseagreen;
+        background: linear-gradient(120deg, #a8d5b5, #8fbf9e);
+      }
+
+      #custom-cursor {
+        position: absolute;
+        pointer-events: none;
+        z-index: 10;
+        border-radius: 50%;
+        border: 2px solid #333;
+        background: rgba(0,0,0,0.08);
+        transition: width 0.1s, height 0.1s, border 0.1s;
+      }
+
+      canvas {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        cursor: none;
+      }
+
+      body, button, aside {
+        font-family: 'Poppins', sans-serif;
+      }
+
+      aside {
+        font-size: 14px;
+        color: #2f4f4f;
+        margin-top: 10px;
+        opacity: 0.8;
+      }
+
+      .container {
+        margin: 0px auto;
+        text-align: center;
+        width: 1000px;
+      }
+
+      button {
+        width: 70px;
+        height: 35px;
+        margin: 5px;
+        font: 14px impact;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .colores {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 0;
+        margin-right: 0;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      }
+
+      .colores button {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        border: 2px solid #111;
+      }
+
+      button:hover {
+        transform: scale(1.1);
+        opacity: 0.85;
+      }
+
+      #red {
+        background-color: #ff0000;
+        color: white;
+      }
+
+      #green {
+        background-color: green;
+        color: white;
+      }
+
+      #blue {
+        background-color: blue;
+        color: white;
+      }
+
+      #yellow {
+        background-color: yellow;
+        color: black;
+      }
+
+      #orange {
+        background-color: orange;
+        color: white;
+      }
+
+      #violet {
+        background-color: rgb(206, 113, 206);
+        color: white;
+      }
+
+      #black {
+        background-color: black;
+        color: white;
+        border: 2px solid #888 !important;
+      }
+
+      #borrar {
+        width: 90px;
+        height: 35px;
+        background-color: #bdbdbd;
+        color: #222;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        border: 2px solid #888;
+        font-family: 'Poppins', sans-serif;
+        margin-top: 50px;
+      }
+
+      #borrar:hover {
+        opacity: 0.7;
+      }
+
+      .draw-area {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px;
+      }
+
+      .grosor-container {
+        position: static;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      }
+
+      .grosor-btn {
+        width: 90px;
+        height: 35px;
+        border-radius: 8px;
+        border: 2px solid #111;
+        background-color: #444;
+        color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .grosor-btn:hover {
+        opacity: 0.7;
+      }
+
+      #container {
+        position: relative;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="draw-area">
+      <div class="colores">
+        <button id="red" type="button" value="#ff0000">Rojo</button>
+        <button id="green" type="button" value="#00ff00">Verde</button>
+        <button id="blue" type="button" value="#0000ff">Azul</button>
+        <button id="yellow" type="button" value="#ffff00">Amarillo</button>
+        <button id="orange" type="button" value="#ff9900">Naranja</button>
+        <button id="violet" type="button" value="#8a2be2">Violeta</button>
+        <button id="black" type="button" value="#000000">Negro</button>
+      </div>
+
+      <canvas id="canvas" width="900px" height="700px"></canvas>
+      <div id="custom-cursor"></div>
+
+      <div class="grosor-container">
+        <button class="grosor-btn" id="grosor-peq" type="button">Pequeño</button>
+        <button class="grosor-btn" id="grosor-med" type="button">Mediano</button>
+        <button class="grosor-btn" id="grosor-gra" type="button">Grande</button>
+        <button id="borrar" type="button">Borrar</button>
+      </div>
+    </div>
+
+    <aside>Click and draw with the mouse.</aside>
+
+    <script src="utils.js"></script>
+    <script>
+      window.onload = function () {
+        
+        var canvas = document.getElementById('canvas'),
+            context = canvas.getContext('2d'),
+            mouse = utils.captureMouse(canvas);
+
+        // Cursor personalizado
+        var customCursor = document.getElementById('custom-cursor');
+        var currentLineWidth = 2;
+
+        function updateCursorSize(size) {
+          customCursor.style.width = size + 'px';
+          customCursor.style.height = size + 'px';
+          customCursor.style.marginLeft = (-size/2) + 'px';
+          customCursor.style.marginTop = (-size/2) + 'px';
+        }
+        updateCursorSize(currentLineWidth);
+
+        canvas.addEventListener('mousemove', function(e) {
+          var rect = canvas.getBoundingClientRect();
+          customCursor.style.left = (e.clientX) + 'px';
+          customCursor.style.top = (e.clientY) + 'px';
+          customCursor.style.display = 'block';
+        });
+
+        canvas.addEventListener('mouseleave', function() {
+          customCursor.style.display = 'none';
+        });
+
+        canvas.addEventListener('mousedown', function () {
+          context.beginPath();
+          context.moveTo(mouse.x, mouse.y);
+          canvas.addEventListener('mousemove', onMouseMove, false);
+        }, false);
+
+        canvas.addEventListener('mouseup', function () {
+          canvas.removeEventListener('mousemove', onMouseMove, false);
+        }, false);
+
+        function onMouseMove() {
+          context.lineTo(mouse.x, mouse.y);
+          context.stroke();
+        }
+
+        var colores = document.getElementsByClassName('colores')[0];
+        colores.addEventListener('click', function(event) {
+          context.strokeStyle = event.target.value;
+        });
+
+        var clearButton = document.getElementById('borrar');
+        clearButton.addEventListener('click', function() {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // Grosor buttons
+        document.getElementById('grosor-peq').onclick = function() {
+          context.lineWidth = 2;
+          currentLineWidth = 2;
+          updateCursorSize(currentLineWidth);
+        };
+        document.getElementById('grosor-med').onclick = function() {
+          context.lineWidth = 6;
+          currentLineWidth = 6;
+          updateCursorSize(currentLineWidth);
+        };
+        document.getElementById('grosor-gra').onclick = function() {
+          context.lineWidth = 14;
+          currentLineWidth = 14;
+          updateCursorSize(currentLineWidth);
+        };
+      };
+    </script>
+  </body>
+</html>

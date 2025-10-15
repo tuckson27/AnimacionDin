@@ -14,7 +14,10 @@
 
         // Fondo azul oscuro (noche)
         context.save();
-        context.fillStyle = '#0a1647'; // azul muy oscuro
+        let grad = context.createLinearGradient(0, 0, 0, canvas.height);
+        grad.addColorStop(0, "#0a1647");   // azul muy oscuro arriba
+        grad.addColorStop(1, "#1f4068");   // azul menos oscuro abajo
+        context.fillStyle = grad;
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.restore();
 
@@ -22,7 +25,10 @@
         context.save();
         context.lineWidth = 3;
         context.strokeStyle = 'black';
-        context.fillStyle = "rgb(241, 90, 40)";
+        let techoGrad = context.createLinearGradient(320, 275, 680, 275);
+        techoGrad.addColorStop(0, "rgb(241, 120, 60)");   // naranja claro
+        techoGrad.addColorStop(1, "rgb(241, 90, 40)");    // naranja original
+        context.fillStyle = techoGrad;
         context.beginPath();
         context.moveTo(320,350);   
         context.lineTo(500,200);   
@@ -36,7 +42,10 @@
         context.save();
         context.lineWidth = 3;
         context.strokeStyle = 'black';
-        context.fillStyle = 'rgba(253, 222, 175)';
+        let casaGrad = context.createLinearGradient(350, 350, 350, 550);
+        casaGrad.addColorStop(0, 'rgba(253, 230, 190)');   // beige más claro arriba
+        casaGrad.addColorStop(1, 'rgba(253, 222, 175)');   // beige original abajo
+        context.fillStyle = casaGrad;
         context.beginPath();
         context.lineJoin = "round";
         context.fillRect(350,350,300,200);   
