@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Reloj Animado</title>
+    <style>
+        body {
+            background: radial-gradient(circle at center, #f0f0f0 0%, #d9d9d9 70%, #bfbfbf 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        canvas { 
+            background: transparent;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); 
+            border-radius: 12px;
+        }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <script>
+    window.onload = function () {
+      var canvas = document.getElementById('canvas'),
+          context = canvas.getContext('2d');
+      var reloj = new Image();
+      var segundero = new Image();
+      var minutero = new Image();
+      var horero = new Image();
+
+      reloj.src = "reloj.png";
+      segundero.src = "segundero.png";
+      minutero.src = "minutero.png";
+      horero.src = "horero.png";
+
+      var v_seg = 6;       // segundos 
+      var v_min = 0.1;     // minutos
+      var v_hora = 0.0083; // horas
+
+      var r_seg = 0,
+          r_min = 0,
+          r_hora = 0;
+
+      var escala = 0.55;
+
+      (function drawFrame () {
+        window.requestAnimationFrame(drawFrame, canvas);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        context.save();
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.scale(escala, escala);
+
+        // Dibujar la cara del reloj
+        context.drawImage(reloj, -reloj.width / 2, -reloj.height / 2);
+
+        // Horero
+        context.save();
+        r_hora += v_hora * Math.PI / 180;
+        context.rotate(r_hora);
+        context.drawImage(horero, -horero.width / 2, -horero.height / 2);
+        context.restore();
+
+        // Minutero 
+        context.save();
+        r_min += v_min * Math.PI / 180;
+        context.rotate(r_min);
+        context.drawImage(minutero, -minutero.width / 2, -minutero.height / 2);
+        context.restore();
+
+        // Segundero 
+        context.save();
+        r_seg += v_seg * Math.PI / 180;
+        context.rotate(r_seg);
+        context.drawImage(segundero, -segundero.width / 2, -segundero.height / 2);
+        context.restore();
+
+        context.restore();
+      }());
+    };
+    </script>
+  </body>
+</html>
