@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ship Sim Mejorado</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #00264d;
+      }
+      #canvas {
+        background-color: #000000;
+      }
+      aside {
+        margin-top: 1rem;
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1rem;
+        letter-spacing: 0.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="1000" height="600"></canvas>
+    <aside>Press left and right arrow keys to rotate ship, up to add thrust.</aside>
+
+    <script src="utils.js"></script>
+    <script src="./classes/navegod.js"></script>
+    <script>
+    window.onload = function () {
+      var canvas = document.getElementById('canvas'),
+          context = canvas.getContext('2d'),
+          ship = new Navegod(),
+          vr = 0,
+          vx = 0,
+          vy = 0,
+          thrust = 0,
+          friction = 0.98,
+          bgImage = new Image();
+
+      bgImage.src = 'espacio.jpg';
+
+      ship.x = canvas.width / 2;
+      ship.y = canvas.height / 2;
+
+      // tamaño estimado de la nave para el wrap-around
+      ship.width = ship.width || 100;
+      ship.height = ship.height || 100;
+
+      window.addEventListener('keydown', function (event) {
+        switch (event.keyCode) {
+          case 37: // left
+            vr = -3;
+            break;
+          case 39: // right
+            vr = 3;
+            break;
+          case 38: // up
+            thrust = 0.05;
+            ship.showFlame = true;
+            break;
+        }
+      }, false);
+
+      window.addEventListener('keyup', function () {
+        vr = 0;
+        thrust = 0;
+        ship.showFlame = false;
+      }, false);
+
+      (function drawFrame() {
+        window.requestAnimationFrame(drawFrame, canvas);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+
+        ship.rotation += vr * Math.PI / 180;
+        var angle = ship.rotation,
+            ax = Math.cos(angle) * thrust,
+            ay = Math.sin(angle) * thrust;
+
+        vx += ax;
+        vy += ay;
+        vx *= friction;
+        vy *= friction;
+        ship.x += vx;
+        ship.y += vy;
+
+        var left = 0,
+            right = canvas.width,
+            top = 0,
+            bottom = canvas.height;
+
+        if (ship.x > right + ship.width / 2) {
+          ship.x = left - ship.width / 2;
+        } else if (ship.x < left - ship.width / 2) {
+          ship.x = right + ship.width / 2;
+        }
+
+        if (ship.y > bottom + ship.height / 2) {
+          ship.y = top - ship.height / 2;
+        } else if (ship.y < top - ship.height / 2) {
+          ship.y = bottom + ship.height / 2;
+        }
+
+        ship.draw(context);
+      }());
+    };
+    </script>
+  </body>
